@@ -65,11 +65,16 @@ function trigger(biodat::BiopacData)
     return rtn
 end
 
+function time_index(n_samples::Int, samples_per_second::AbstractFloat)
+    "time index in seconds"
+    total_seconds = n_samples / samples_per_second
+    return Vector(range(start=0, stop=total_seconds, length=n_samples))
+end
+
 function time_index(bio_dat::BiopacData)
     "time index in seconds"
     total_samples = maximum([ch.frequency_divider * ch.point_count
                                         for ch in bio_dat.channels])
-    total_seconds = total_samples / bio_dat.samples_per_second
-    return Vector(range(start=0, stop=total_seconds, length=total_samples))
+    return time_index(total_samples, bio_dat.samples_per_second)
 end
 
