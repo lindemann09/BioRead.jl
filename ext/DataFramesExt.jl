@@ -13,7 +13,7 @@ function DataFrames.DataFrame(biodat::BiopacData;
     mtx = Matrix(biodat)
     col_names =  names(biodat)
     if time
-        mtx = hcat(time_index(biodat), mtx)
+        mtx = hcat(biodat.time_index, mtx)
         col_names = vcat(["time"], col_names)
     end
 

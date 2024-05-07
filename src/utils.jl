@@ -13,7 +13,11 @@ end
 
 function upsample(data::Vector{<:Real}, frequency_divider::Int)
     "upsampling data using Nearest-neighbor sampling"
-    total_samples = length(data) * frequency_divider
-    ids = ceil.(Int, range(1, total_samples)/frequency_divider)
-    return data[ids]
+    if frequency_divider == 1
+        return data
+    else
+        total_samples = length(data) * frequency_divider
+        ids = ceil.(Int, range(1, total_samples)/frequency_divider)
+        return data[ids]
+    end
 end

@@ -31,6 +31,8 @@ function Base.getproperty(x::BioPacChannel, s::Symbol)
 	elseif s === :n_samples
 		return x.point_count
 	elseif s === :upsampled_data
+        # The channel's data, sampled at the native frequency of the file.
+        # All channels will have the same number of points using this method
 		return upsample(x.data, x.frequency_divider)
 	else
 		return getfield(x, s)
@@ -38,6 +40,21 @@ function Base.getproperty(x::BioPacChannel, s::Symbol)
 end
 
 function Base.show(io::IO, mime::MIME"text/plain", x::BioPacChannel)
-	#println(io, "BioPacChannel $(x.name): $(x.point_count) samples, $(x.samples_per_second) samples/sec")
-	println(io, "BioPacChannel $(x.name)")
+	println(io, "BioPacChannel $(x.name): $(x.point_count) samples, $(x.samples_per_second) samples/sec")
 end;
+
+## channel header
+
+struct BioPacChannelHeader
+    offset::Int64
+    file_revision::Int64
+    encoding::String
+    data::Dict
+end;
+
+function BioPacChannelHeader(x::PyCall.PyObject)
+    return BioPacChannelHeader(x.offset,
+            x.file_revision,
+            x.encoding,
+            x.data)
+end

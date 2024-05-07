@@ -14,10 +14,7 @@ export BioPacChannel,
     read,
     get_channel,
     Matrix,
-    time_index,
     trigger,
-    names,
-    units,
     # extension dataframes
     trigger_dataframe
 

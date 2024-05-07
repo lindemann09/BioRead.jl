@@ -1,11 +1,53 @@
 struct BioPacDataFile{T <: AbstractFloat}
-	channels::Vector{BioPacChannel{T}}
+    #graph_header
+    channel_headers::Vector{BioPacChannelHeader}
+    #foreign_header
+    #channel_dtype_headers
     samples_per_second::Float64
+    name::Union{Nothing, String}
+    #marker_header
+    #marker_item_headers
+    #event_markers
+    #journal_header
+    #journal
+	channels::Vector{BioPacChannel{T}}
     earliest_marker_created_at:: DateTime
+    acq_file::String # addional variable
 end;
 
-Base.names(biodat::BioPacDataFile) =  [x.name for x in biodat.channels]
-units(biodat::BioPacDataFile) =  [x.units for x in biodat.channels]
+Base.propertynames(::BioPacDataFile) = (fieldnames(BioPacDataFile)...,
+                        :time_index, :names, :units)
+function Base.getproperty(x::BioPacDataFile, s::Symbol)
+	if s === :time_index
+        total_samples = maximum([ch.frequency_divider * ch.point_count
+                                    for ch in bio_dat.channels])
+        return time_index(total_samples, x.samples_per_second)
+	elseif s === :names
+        return [c.name for c in x.channels]
+	elseif s === :units
+        return [c.units for c in x.channels]
+	else
+		return getfield(x, s)
+	end
+end
+
+function Base.read(::Type{BioPacDataFile}, acq_file::String)
+    bioread = pyimport("bioread")
+    acq = bioread.read(acq_file)
+    channels = Vector{BioPacChannel{Float64}}()
+    headers = Vector{BioPacChannelHeader}()
+    for x in acq.channels
+        push!(channels, BioPacChannel(x))
+    end
+    for x in acq.channel_headers
+        push!(headers, BioPacChannelHeader(x))
+    end
+
+    dt = DateTime(acq.earliest_marker_created_at)
+    return BioPacDataFile(headers, acq.samples_per_second, acq.name, channels,
+                dt, acq_file)
+end
+
 
 
 function Base.show(io::IO, mime::MIME"text/plain", x::BioPacDataFile)
@@ -15,24 +57,6 @@ function Base.show(io::IO, mime::MIME"text/plain", x::BioPacDataFile)
     end
 end;
 
-function Base.read(::Type{BioPacDataFile}, flname::String)
-    bioread = pyimport("bioread")
-    acq = bioread.read(flname)
-    dat = Vector{BioPacChannel{Float64}}()
-    #bit = 0
-    for x in acq.channels
-        #if x.name == "Digital input"
-        #    bit += 1
-        #    name =  "DI" * string(bit)
-        #else
-        #    name = x.name
-        #end
-        ch = BioPacChannel(x)
-        push!(dat, ch)
-    end
-    dt = DateTime(acq.earliest_marker_created_at)
-    return BioPacDataFile(dat, acq.samples_per_second, dt)
-end
 
 function get_channel(biodat::BioPacDataFile, name::Union{AbstractString, Symbol})
     for x in biodat.channels
@@ -43,7 +67,7 @@ function get_channel(biodat::BioPacDataFile, name::Union{AbstractString, Symbol}
 end
 
 function Base.Matrix(biodat::BioPacDataFile)
-    dat = [x.data for x in biodat.channels]
+    dat = [x.upsampled_data for x in biodat.channels]
     return reduce(hcat, dat)
 end
 
@@ -64,11 +88,4 @@ function trigger(biodat::BioPacDataFile)
     end
     return rtn
 end
-
-#function time_index(bio_dat::BioPacDataFile)
-#    "time index in seconds"
-#    total_samples = maximum([ch.frequency_divider * ch.point_count
-#                                        for ch in bio_dat.channels])
-#    return time_index(total_samples, bio_dat.samples_per_second)
-#end
 
