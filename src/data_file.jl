@@ -72,23 +72,3 @@ function Base.Matrix(biodat::BioPacDataFile)
 end
 
 
-const digital_input_str = "Digital input"
-
-function trigger(biodat::BioPacDataFile)
-    "extracts trigger from digital input"
-    rtn = nothing
-    place = 0
-    for x in biodat.channels
-        if x.name == digital_input_str
-            place += 1
-            bits = (x.data .> 0) .<< place
-            if isnothing(rtn)
-                rtn = bits
-            else
-                rtn = rtn .| bits
-            end
-        end
-    end
-    return rtn
-end
-

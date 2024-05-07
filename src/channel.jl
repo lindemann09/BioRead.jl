@@ -44,6 +44,8 @@ function Base.show(io::IO, mime::MIME"text/plain", x::BioPacChannel)
 	println(io, "BioPacChannel $(x.name): $(x.point_count) samples, $(x.samples_per_second) samples/sec")
 end;
 
+
+
 ## channel header
 
 struct BioPacChannelHeader

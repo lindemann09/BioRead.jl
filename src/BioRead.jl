@@ -11,19 +11,16 @@ end
 
 export BioPacChannel,
     BioPacDataFile,
+    Trigger,
     read,
     get_channel,
-    Matrix,
-    trigger,
-    # extension dataframes
-    trigger_dataframe
+    Matrix
 
 include("utils.jl")
 include("channel.jl")
 include("data_file.jl")
+include("trigger.jl")
 
-## extensions
-trigger_dataframe(::Any) = throw(ArgumentError("You have not loaded DataFrames?"))
 
 if !isdefined(Base, :get_extension)
     include("../ext/DataFramesExt.jl")

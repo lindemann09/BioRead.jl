@@ -36,26 +36,10 @@ function DataFrames.DataFrame(biodat::BioPacDataFile;
     end
 end
 
-function BioRead.trigger_dataframe(biodat::BioPacDataFile)
-    rtn = DataFrame(trigger = Vector{Int}(),
-                    idx = Vector{Int}(),
-                    len = Vector{Int}())
-    last = 0
-    idx = 0
-    len = 0
-    for (i, x) in enumerate(trigger(biodat))
-        if x != last
-            if last != 0
-                push!(rtn, (last, idx, len))
-            end
-            last = x
-            idx = i
-            len = 1
-        else
-            len += 1
-        end
-    end
-    return(rtn)
+function DataFrames.DataFrame(trigger::Trigger)
+    return DataFrame(trigger = trigger.trigger,
+                    start = [x.start for x in trigger.ranges],
+                    len = [length(x) for x in trigger.ranges])
 end
 
 
