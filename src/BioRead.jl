@@ -9,9 +9,9 @@ catch
     throw(DomainError("Can't find the python libarary 'bioread'. "))
 end
 
-export BiopacChannel,
-    BiopacData,
-    read_acq_file,
+export BioPacChannel,
+    BioPacDataFile,
+    read,
     get_channel,
     Matrix,
     time_index,
@@ -21,7 +21,9 @@ export BiopacChannel,
     # extension dataframes
     trigger_dataframe
 
-include("lib.jl")
+include("utils.jl")
+include("channel.jl")
+include("data_file.jl")
 
 ## extensions
 trigger_dataframe(::Any) = throw(ArgumentError("You have not loaded DataFrames?"))
