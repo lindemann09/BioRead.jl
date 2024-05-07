@@ -1,7 +1,7 @@
 name = "BioRead"
 uuid = "8a4f0892-9e3f-4174-91a5-9138f466328f"
 authors = ["Oliver Lindemann"]
-version = "0.2.1"
+version = "0.2.2-DEV"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
