@@ -1,7 +1,7 @@
 module DataFramesExt
 
 using DataFrames
-using BioPac
+using BioRead
 
 export DataFrame,
     trigger_dataframe;
@@ -27,7 +27,7 @@ function DataFrames.DataFrame(biodat::BiopacData;
     end
 end
 
-function BioPac.trigger_dataframe(biodat::BiopacData)
+function BioRead.trigger_dataframe(biodat::BiopacData)
     rtn = DataFrame(trigger = Vector{Int}(),
                     idx = Vector{Int}(),
                     len = Vector{Int}())

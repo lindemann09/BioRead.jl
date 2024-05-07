@@ -1,4 +1,4 @@
-module BioPac
+module BioRead
 
 using PyCall
 using Dates

@@ -1,5 +1,5 @@
-name = "BioPac"
-uuid = "11a0cc6e-ac65-4235-9e82-a47cb1c8620d"
+name = "BioRead"
+uuid = "8a4f0892-9e3f-4174-91a5-9138f466328f"
 authors = ["Oliver Lindemann"]
 version = "0.1.0-DEV"
 
