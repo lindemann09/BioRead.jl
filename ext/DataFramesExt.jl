@@ -7,11 +7,19 @@ export DataFrame,
     trigger_dataframe;
 
 
-function DataFrames.DataFrame(biodat::BiopacData;
+function DataFrames.DataFrame(biodat::BioPacDataFile;
                     digital_input::Bool=true,
                     time::Bool=false)
     mtx = Matrix(biodat)
-    col_names =  names(biodat)
+    col_names =  String[]
+    cnt = 0
+    for x in biodat.channel_names
+        if x == BioRead.digital_input_str
+            cnt += 1
+            x = x * string(cnt)
+        end
+        push!(col_names, replace(x, " "=>"_"))
+    end
     if time
         mtx = hcat(biodat.time_index, mtx)
         col_names = vcat(["time"], col_names)
@@ -22,12 +30,13 @@ function DataFrames.DataFrame(biodat::BiopacData;
     if digital_input
         return rtn
     else
-        sel_name = [x for x in names(rtn) if !startswith(x, "DI")]
+        di = replace(BioRead.digital_input_str, " "=>"_")
+        sel_name = [x for x in names(rtn) if !startswith(x, di)]
         return select(rtn, sel_name...)
     end
 end
 
-function BioRead.trigger_dataframe(biodat::BiopacData)
+function BioRead.trigger_dataframe(biodat::BioPacDataFile)
     rtn = DataFrame(trigger = Vector{Int}(),
                     idx = Vector{Int}(),
                     len = Vector{Int}())

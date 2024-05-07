@@ -16,18 +16,18 @@ struct BioPacDataFile{T <: AbstractFloat}
 end;
 
 Base.propertynames(::BioPacDataFile) = (fieldnames(BioPacDataFile)...,
-                        :time_index, :names, :units)
+                        :time_index, :channel_names, :channel_units)
 function Base.getproperty(x::BioPacDataFile, s::Symbol)
 	if s === :time_index
         total_samples = maximum([ch.frequency_divider * ch.point_count
                                     for ch in bio_dat.channels])
         return time_index(total_samples, x.samples_per_second)
-	elseif s === :names
+	elseif s === :channel_names
         return [c.name for c in x.channels]
-	elseif s === :units
+	elseif s === :channel_units
         return [c.units for c in x.channels]
 	else
-		return getfield(x, s)
+        return getfield(x, s)
 	end
 end
 
@@ -71,12 +71,15 @@ function Base.Matrix(biodat::BioPacDataFile)
     return reduce(hcat, dat)
 end
 
+
+const digital_input_str = "Digital input"
+
 function trigger(biodat::BioPacDataFile)
     "extracts trigger from digital input"
     rtn = nothing
     place = 0
     for x in biodat.channels
-        if x.name == "Digital input"
+        if x.name == digital_input_str
             place += 1
             bits = (x.data .> 0) .<< place
             if isnothing(rtn)

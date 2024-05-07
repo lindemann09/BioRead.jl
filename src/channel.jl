@@ -1,3 +1,4 @@
+
 struct BioPacChannel{T <: AbstractFloat}
     data::Vector{T}
     frequency_divider::Int64
