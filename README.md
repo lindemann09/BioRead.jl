@@ -1,4 +1,4 @@
-# BioRead: Julia library to handle BioPac data
+# BioRead: Julia library to handle Biopac data
 
 
 This Julia library calls the read functions of the [bioread Python library](https://pypi.org/project/bioread/). Ensure that `bioread` is installed in your `PyCall` Python environment.

@@ -1,5 +1,5 @@
 
-struct BioPacChannel{T <: AbstractFloat}
+struct BiopacChannel{T <: AbstractFloat}
     data::Vector{T}
     frequency_divider::Int64
     raw_scale_factor::T
@@ -10,8 +10,8 @@ struct BioPacChannel{T <: AbstractFloat}
     point_count:: Int64 # n_samples
 end;
 
-function BioPacChannel(x::PyCall.PyObject)
-    return BioPacChannel(x.data,
+function BiopacChannel(x::PyCall.PyObject)
+    return BiopacChannel(x.data,
             x.frequency_divider,
             x.raw_scale_factor,
             x.raw_offset,
@@ -21,8 +21,8 @@ function BioPacChannel(x::PyCall.PyObject)
             x.point_count)
 end
 
-Base.propertynames(::BioPacChannel) = (fieldnames(BioPacChannel)..., :raw_data, :time_index, :n_samples, :upsampled_data)
-function Base.getproperty(x::BioPacChannel, s::Symbol)
+Base.propertynames(::BiopacChannel) = (fieldnames(BiopacChannel)..., :raw_data, :time_index, :n_samples, :upsampled_data)
+function Base.getproperty(x::BiopacChannel, s::Symbol)
 	if s === :raw_data
         # The channel's data, scaled by the raw_scale_factor and offset.
 		return (x.data .- x.raw_offset) ./ x.raw_scale_factor
@@ -40,23 +40,23 @@ function Base.getproperty(x::BioPacChannel, s::Symbol)
 	end
 end
 
-function Base.show(io::IO, mime::MIME"text/plain", x::BioPacChannel)
-	println(io, "BioPacChannel $(x.name): $(x.point_count) samples, $(x.samples_per_second) samples/sec")
+function Base.show(io::IO, mime::MIME"text/plain", x::BiopacChannel)
+	println(io, "BiopacChannel $(x.name): $(x.point_count) samples, $(x.samples_per_second) samples/sec")
 end;
 
 
 
 ## channel header
 
-struct BioPacChannelHeader
+struct BiopacChannelHeader
     offset::Int64
     file_revision::Int64
     encoding::String
     data::Dict
 end;
 
-function BioPacChannelHeader(x::PyCall.PyObject)
-    return BioPacChannelHeader(x.offset,
+function BiopacChannelHeader(x::PyCall.PyObject)
+    return BiopacChannelHeader(x.offset,
             x.file_revision,
             x.encoding,
             x.data)

@@ -7,7 +7,7 @@ export DataFrame,
     trigger_dataframe;
 
 
-function DataFrames.DataFrame(biodat::BioPacDataFile;
+function DataFrames.DataFrame(biodat::BiopacDataFile;
                     digital_input::Bool=true,
                     time::Bool=false)
     mtx = Matrix(biodat)

@@ -9,8 +9,8 @@ catch
     throw(DomainError("Can't find the python libarary 'bioread'. "))
 end
 
-export BioPacChannel,
-    BioPacDataFile,
+export BiopacChannel,
+    BiopacDataFile,
     Trigger,
     read,
     get_channel,
