@@ -31,7 +31,7 @@ function Base.getproperty(x::BiopacDataFile, s::Symbol)
 	end
 end
 
-function Base.read(::Type{BiopacDataFile}, acq_file::String)
+function Base.read(::Type{BiopacDataFile}, acq_file::AbstractString)
     bioread = pyimport("bioread")
     acq = bioread.read(acq_file)
     channels = Vector{BiopacChannel{Float64}}()
@@ -48,7 +48,7 @@ function Base.read(::Type{BiopacDataFile}, acq_file::String)
                 dt, acq_file)
 end
 
-
+BiopacDataFile(acq_file::AbstractString) = read(BiopacDataFile, acq_file)
 
 function Base.show(io::IO, mime::MIME"text/plain", x::BiopacDataFile)
 	println(io, "BiopacDataFile")

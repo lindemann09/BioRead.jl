@@ -26,10 +26,11 @@ function DataFrames.DataFrame(biodat::BiopacDataFile;
     end
 
     rtn = DataFrame(mtx, col_names)
-    rtn.trigger = trigger(biodat)
+    rtn.trigger  = trigger_bytes(biodat)
     if digital_input
         return rtn
     else
+        # remove digital_inputs
         di = replace(BioRead.digital_input_str, " "=>"_")
         sel_name = [x for x in names(rtn) if !startswith(x, di)]
         return select(rtn, sel_name...)
