@@ -16,13 +16,9 @@ struct BiopacDataFile{T <: AbstractFloat}
 end;
 
 Base.propertynames(::BiopacDataFile) = (fieldnames(BiopacDataFile)...,
-                        :time_index, :channel_names, :channel_units)
+                         :channel_names, :channel_units)
 function Base.getproperty(x::BiopacDataFile, s::Symbol)
-	if s === :time_index
-        total_samples = maximum([ch.frequency_divider * ch.point_count
-                                    for ch in bio_dat.channels])
-        return time_index(total_samples, x.samples_per_second)
-	elseif s === :channel_names
+	if s === :channel_names
         return [c.name for c in x.channels]
 	elseif s === :channel_units
         return [c.units for c in x.channels]
@@ -57,6 +53,12 @@ function Base.show(io::IO, mime::MIME"text/plain", x::BiopacDataFile)
     end
 end;
 
+
+function time_index(biodat::BiopacDataFile)
+    total_samples = maximum([ch.frequency_divider * ch.point_count
+            for ch in biodat.channels])
+    return time_index(total_samples, biodat.samples_per_second)
+end
 
 function get_channel(biodat::BiopacDataFile, name::Union{AbstractString, Symbol})
     for x in biodat.channels

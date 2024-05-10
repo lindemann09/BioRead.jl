@@ -15,7 +15,8 @@ export BiopacChannel,
     read,
     get_channel,
     Matrix,
-    trigger_bytes
+    trigger_bytes,
+    time_index
 
 include("utils.jl")
 include("channel.jl")

@@ -9,7 +9,7 @@ export DataFrame,
 
 function DataFrames.DataFrame(biodat::BiopacDataFile;
                     digital_input::Bool=true,
-                    time::Bool=false)
+                    time_index::Bool=false)
     mtx = Matrix(biodat)
     col_names =  String[]
     cnt = 0
@@ -20,8 +20,8 @@ function DataFrames.DataFrame(biodat::BiopacDataFile;
         end
         push!(col_names, replace(x, " "=>"_"))
     end
-    if time
-        mtx = hcat(biodat.time_index, mtx)
+    if time_index
+        mtx = hcat(BioRead.time_index(biodat), mtx)
         col_names = vcat(["time"], col_names)
     end
 
