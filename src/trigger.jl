@@ -4,7 +4,7 @@ struct Trigger
     ranges::Vector{UnitRange{Int64}}
 end
 
-function Trigger(biodat::BiopacDataFile)
+function Trigger(biodat::BiopacData)
     signal = trigger_bytes(biodat)
     trigger = Int64[]
     ranges = UnitRange{Int64}[]
@@ -25,7 +25,7 @@ function Trigger(biodat::BiopacDataFile)
 end
 
 
-function trigger_bytes(biodat::BiopacDataFile)
+function trigger_bytes(biodat::BiopacData)
     "extracts trigger from digital input"
     rtn = nothing
     place = -1

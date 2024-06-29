@@ -2,21 +2,19 @@ module BioRead
 
 using PyCall
 using Dates
+using JLD2, CodecZlib
 
-try
-    pyimport("bioread")
-catch
-    throw(DomainError("Can't find the python libarary 'bioread'. "))
-end
-
-export BiopacChannel,
-    BiopacDataFile,
+export BiopacData,
+    BiopacChannel,
     Trigger,
     read,
+    read_acq,
     get_channel,
     Matrix,
     trigger_bytes,
-    time_index
+    time_index,
+    convert_acq_to_jld2,
+    convert_acq_data_folder
 
 include("utils.jl")
 include("channel.jl")

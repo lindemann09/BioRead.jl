@@ -1,11 +1,13 @@
 name = "BioRead"
 uuid = "8a4f0892-9e3f-4174-91a5-9138f466328f"
 authors = ["Oliver Lindemann"]
-version = "0.2.3-DEV"
+version = "0.2.4-DEV"
 
 [deps]
+CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 
 [weakdeps]
@@ -15,8 +17,8 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DataFramesExt = ["DataFrames"]
 
 [compat]
-julia = "1"
 DataFrames = "1"
+julia = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
