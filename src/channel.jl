@@ -2,8 +2,8 @@
 struct BiopacChannel{T <: AbstractFloat}
     data::Vector{T}
     frequency_divider::Int64
-    raw_scale_factor::T
-    raw_offset::T
+    raw_scale_factor::Float64
+    raw_offset::Float64
     name::String
     units::String
     samples_per_second::Float64
@@ -13,11 +13,11 @@ end;
 function BiopacChannel(x::PyCall.PyObject)
     return BiopacChannel(x.data,
             x.frequency_divider,
-            x.raw_scale_factor,
-            x.raw_offset,
+            Float64(x.raw_scale_factor),
+            Float64(x.raw_offset),
             x.name,
             x.units,
-            x.samples_per_second,
+            Float64(x.samples_per_second),
             x.point_count)
 end
 
@@ -47,7 +47,6 @@ function time_index(ch::BiopacChannel)
 end
 
 ## channel header
-
 struct BiopacChannelHeader
     offset::Int64
     file_revision::Int64

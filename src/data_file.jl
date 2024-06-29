@@ -11,7 +11,7 @@ struct BiopacDataFile{T <: AbstractFloat}
     #journal_header
     #journal
 	channels::Vector{BiopacChannel{T}}
-    earliest_marker_created_at:: DateTime
+    earliest_marker_created_at:: Union{Nothing, DateTime}
     acq_file::String # addional variable
 end;
 
@@ -39,7 +39,11 @@ function Base.read(::Type{BiopacDataFile}, acq_file::AbstractString)
         push!(headers, BiopacChannelHeader(x))
     end
 
-    dt = DateTime(acq.earliest_marker_created_at)
+    if acq.earliest_marker_created_at == nothing
+        dt = nothing
+    else
+        dt = DateTime(acq.earliest_marker_created_at)
+    end
     return BiopacDataFile(headers, acq.samples_per_second, acq.name, channels,
                 dt, acq_file)
 end

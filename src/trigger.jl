@@ -1,5 +1,3 @@
-const digital_input_str = "Digital input"
-
 struct Trigger
     signal::Vector{Int64}
     trigger::Vector{Int64}
@@ -30,9 +28,9 @@ end
 function trigger_bytes(biodat::BiopacDataFile)
     "extracts trigger from digital input"
     rtn = nothing
-    place = 0
+    place = -1
     for x in biodat.channels
-        if x.name == digital_input_str
+        if startswith(x.name, "Digital ")
             place += 1
             bits = (x.data .> 0) .<< place
             if isnothing(rtn)
