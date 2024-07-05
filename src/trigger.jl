@@ -2,13 +2,13 @@ struct Trigger
     signal::Vector{Int64}
     trigger::Vector{Int64}
     ranges::Vector{UnitRange{Int64}}
+    time_index::AbstractRange
 end
 
 function Trigger(biodat::BiopacData)
     signal = trigger_bytes(biodat)
     trigger = Int64[]
     ranges = UnitRange{Int64}[]
-
     last_tr = 0
     idx = 0
     for (i, x) in enumerate(signal)
@@ -21,7 +21,7 @@ function Trigger(biodat::BiopacData)
             idx = i
         end
     end
-    return Trigger(signal, trigger, ranges)
+    return Trigger(signal, trigger, ranges, time_index(biodat))
 end
 
 

@@ -38,13 +38,11 @@ function Base.getproperty(x::BiopacChannel, s::Symbol)
 end
 
 function Base.show(io::IO, mime::MIME"text/plain", x::BiopacChannel)
-	println(io, "BiopacChannel $(x.name): $(x.point_count) samples, $(x.samples_per_second) samples/sec")
+	print(io, "BiopacChannel $(x.name): $(x.point_count) samples, $(x.samples_per_second) samples/sec")
 end;
 
-function time_index(ch::BiopacChannel)
-    return time_index(ch.point_count, ch.samples_per_second;
+time_index(ch::BiopacChannel) =  time_index(ch.point_count, ch.samples_per_second;
                 frequency_divider= ch.frequency_divider)
-end
 
 ## channel header
 struct BiopacChannelHeader
