@@ -17,6 +17,12 @@ function time_index(n_samples::Int,
 	return range(; start, stop, step)
 end
 
+function time_index(sample_range::UnitRange{Int64}, samples_per_second::Real)
+	"time index in seconds"
+	step = 1 / samples_per_second
+	range(sample_range.start*step, sample_range.stop*step; step)
+end
+
 function upsample(data::Vector{<:Real}, frequency_divider::Int)
 	"upsampling data using Nearest-neighbor sampling"
 	if frequency_divider == 1
