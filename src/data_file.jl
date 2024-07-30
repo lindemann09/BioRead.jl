@@ -88,8 +88,9 @@ end
 function convert_acq_to_jld2(acq_file::String;
                         jld_dest_file::Union{Nothing, String} = nothing,
                         override::Bool=false)
+
     if jld_dest_file === nothing
-	    jld_dest_file = replace(lowercase(acq_file), ".acq" => ".jld2", " " => "_")
+	    jld_dest_file = _jdl_filename(acq_file)
     end
 	if !override && isfile(jld_dest_file)
 		return # don't override existing jld file
@@ -101,11 +102,23 @@ function convert_acq_to_jld2(acq_file::String;
 end;
 
 
-function convert_acq_data_folder(data_folder::String; override::Bool=false)
-	for x in readdir(data_folder)
+function convert_acq_data_folder(data_folder::String;
+            override::Bool=false,
+            dest_folder::Union{Nothing, String}=nothing)
+
+    if isnothing(dest_folder)
+        dest_folder = data_folder
+    end
+    if !isdir(dest_folder)
+        mkdir(dest_folder)
+    end
+
+    for x in readdir(data_folder)
 		if endswith(x, ".acq")
-			convert_acq_to_jld2(joinpath(data_folder, x); override)
+            jld_dest_file = joinpath(dest_folder, _jdl_filename(x))
+			convert_acq_to_jld2(joinpath(data_folder, x); override, jld_dest_file)
 		end
 	end
 end;
 
+_jdl_filename(x) = replace(lowercase(x), ".acq" => ".jld2", " " => "_")

@@ -26,6 +26,4 @@ if !isdefined(Base, :get_extension)
     include("../ext/DataFramesExt.jl")
 end
 
-
-# Write your package code here.
 end
