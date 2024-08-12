@@ -38,9 +38,10 @@ function DataFrames.DataFrame(biodat::BiopacData;
 end
 
 function DataFrames.DataFrame(trigger::Trigger)
-    return DataFrame(trigger = trigger.trigger,
-                    start = [x.start for x in trigger.ranges],
-                    len = [length(x) for x in trigger.ranges])
+    tr = trigger_ranges(trigger)
+    return DataFrame(trigger = tr.trigger,
+                    start = [x.start for x in tr.ranges],
+                    len = [length(x) for x in tr.ranges])
 end
 
 

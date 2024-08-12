@@ -11,7 +11,7 @@ export BiopacData,
     read_acq,
     get_channel,
     Matrix,
-    trigger_bytes,
+    trigger_ranges,
     time_index,
     convert_acq_to_jld2,
     convert_acq_data_folder
