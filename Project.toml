@@ -1,7 +1,7 @@
 name = "BioRead"
 uuid = "8a4f0892-9e3f-4174-91a5-9138f466328f"
 authors = ["Oliver Lindemann"]
-version = "0.3.3-DEV"
+version = "0.3.4"
 
 [deps]
 CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
