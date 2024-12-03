@@ -2,7 +2,6 @@ module BioRead
 
 using PyCall
 using Dates
-using JLD2, CodecZlib
 
 export BiopacData,
     BiopacChannel,
@@ -12,9 +11,7 @@ export BiopacData,
     get_channel,
     Matrix,
     trigger_ranges,
-    time_index,
-    convert_acq_to_jld2,
-    convert_acq_data_folder
+    time_index
 
 include("utils.jl")
 include("channel.jl")
