@@ -27,14 +27,6 @@ function Base.getproperty(x::BiopacData, s::Symbol)
 	end
 end
 
-function Base.read(::Type{BiopacData}, acq_jld2_file::AbstractString)
-    if endswith(acq_jld2_file, ".acq")
-        return read_acq(acq_jld2_file::AbstractString)
-    else
-        return load(acq_jld2_file, "bio")
-    end
-end
-
 function read_acq(acq_file::AbstractString)
     bioread = pyimport("bioread")
     acq = bioread.read(acq_file)
@@ -57,6 +49,7 @@ function read_acq(acq_file::AbstractString)
 end
 
 BiopacData(acq_file::AbstractString) = read_acq(acq_file)
+Base.read(::Type{BiopacData}, acq_file::AbstractString) = read_acq(acq_file::AbstractString)
 
 function Base.show(io::IO, mime::MIME"text/plain", x::BiopacData)
 	println(io, "BiopacData")
