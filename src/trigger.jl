@@ -38,7 +38,7 @@ function trigger_ranges(x::Trigger; zero_trigger::Bool=false)
     end
     if last_tr != 0 || zero_trigger
         push!(trigger, last_tr)
-        push!(ranges, range(idx, length(bytes)))
+        push!(ranges, range(idx, length(x.bytes)))
     end
     return (; trigger, ranges)
 end
