@@ -3,7 +3,7 @@ struct Trigger
     time_index::AbstractRange
 end
 
-function Trigger(biodat::BiopacData; zero_trigger::Bool=false)
+function Trigger(biodat::BiopacData)
     #bytes
     tr_bytes = nothing
     place = -1
